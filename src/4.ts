@@ -1,3 +1,55 @@
+class Key {
+    private signature: number;
+    constructor() {
+        this.signature = Math.random();
+    }
+    getSignature(): number {
+        return this.signature;
+    }
+} 
+class Person {
+    private key: Key;
+    constructor(key: Key) {
+        this.key = key;
+    }
+    getKey(): Key {
+        return this.key;
+    }
+}
+ 
+abstract class House {
+    protected door: boolean = false;
+    protected key: Key;
+    protected tenants: Person[] = [];
+
+    constructor(key: Key) {
+              this.key = key;  
+    }
+    abstract openDoor(key: Key): void;
+
+    comeIn(person: Person): void {
+         if (this.door && this.tenants.indexOf(person) === -1) {
+      this.tenants.push(person);
+    } else {
+      console.log('Access denied or the person is already inside.');
+    }
+  } 
+}
+
+
+class MyHouse extends House {
+    openDoor(key: Key):void {
+       if (key.getSignature() === this.key.getSignature()) {
+      this.door = true;
+      console.log('The door is now open.');
+    } else {
+      this.door = false;
+      console.log('Access denied. The door remains closed.');
+    }
+}
+}
+
+
 const key = new Key();
 
 const house = new MyHouse(key);
